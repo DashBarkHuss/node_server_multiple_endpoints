@@ -1,2 +1,2 @@
-require('dotenv');
+require('dotenv/config');
 require('../index');

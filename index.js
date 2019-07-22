@@ -1,11 +1,13 @@
 let http = require('http');
 let fs = require('fs');
+let {database} = require('./api');
+
+database.create();
 
 const ip = '127.0.0.1';
 const port = 3000;
 
 http.createServer(function(request,response){
-  console.log(request.url);
   let file;
   if (request.url === '/') file = 'index.html'
   else file = request.url.slice(1, request.url.length);
@@ -27,3 +29,5 @@ http.createServer(function(request,response){
   });
 
 }).listen(port, ip);
+
+console.log('Running at http://' + ip + ":" + port + "/");
