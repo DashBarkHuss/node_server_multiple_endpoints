@@ -7,8 +7,8 @@ const port = 3000;
 http.createServer(function(request,response){
   console.log(request.url);
   let file;
-  if (request.url === '/') file = 'index.html';
-
+  if (request.url === '/') file = 'index.html'
+  else file = request.url.slice(1, request.url.length);
   fs.readFile(file, function(error, content){
     if(error){
       if (error.code='ENOENT'){
