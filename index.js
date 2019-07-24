@@ -1,6 +1,7 @@
 let http = require('http');
 let fs = require('fs');
-let {database} = require('./api');
+let {API, database} = require('./api');
+const fetch = require('node-fetch');
 
 database.create();
 
@@ -14,10 +15,13 @@ http.createServer(function(request,response){
   fs.readFile(file, function(error, content){
     if(error){
       if (error.code='ENOENT'){
-        fs.readFile('/404.html', function(error, content){
-          response.writeHead(200, {'Content-Type': 'text/html'});
-          response.end(content, 'utf-8')
-        });
+        if (API.catchAPIrequest(request.url))
+          API.exec(request,response);
+        else
+          fs.readFile('/404.html', function(error, content){
+            response.writeHead(200, {'Content-Type': 'text/html'});
+            response.end(content, 'utf-8')
+          });
       } else {
         response.writeHead(500);
         response.end('Error: ' + error.code + '\n');
@@ -31,3 +35,11 @@ http.createServer(function(request,response){
 }).listen(port, ip);
 
 console.log('Running at http://' + ip + ":" + port + "/");
+
+fetch('http://127.0.0.1:3000/api/butt', {
+  method: 'post',
+  headers: {
+    'Accept': 'application/json'
+  },
+  body: JSON.stringify({butt: 'backend'})
+})

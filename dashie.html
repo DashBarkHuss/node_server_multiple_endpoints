@@ -1,1 +1,42 @@
-Dashie is great
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script type="module">
+    class User {
+      constructor() {}
+    }
+    User.butt = function () {
+      console.log("user.butt");
+      fetch('/api/butt', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({butt: 'round'})
+      }).then(promise => promise.json())
+        .then(json => {
+          if (json.success)
+            console.log(json);
+          else
+            console.log(`something went wrong: `, json);
+        });
+    }
+    
+    window.onload = () => {
+            window.User = User;
+        }
+    
+  </script>
+</head>
+
+<body>
+  Dashie is great
+  <input type="button" onclick="User.butt()" value="butt"></input>
+</body>
+
+</html>
