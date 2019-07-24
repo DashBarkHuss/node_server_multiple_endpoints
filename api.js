@@ -22,16 +22,7 @@ function butt(request, payload){
     reject("error")
     console.log("23");
     resolve(`{"success": true}`)
-  })
-
-}
-
-function respond ( response, content ) {
-  console.log("responding = ", [ content ]);
-  const jsontype = "{ 'content-Type': 'application/json' }";
-  response.writeHead(200, jsontype);
-  console.log(content);
-  response.end(content, 'utf-8');
+  });
 }
 
 class API {
@@ -55,8 +46,14 @@ class API {
       API.parts = request.parts;
       if (API.parts[0] == 'api' && API.parts[1] == "butt")
         console.log("chunks: ", JSON.parse(Buffer.concat (request.chunks)));
-        butt(request, JSON.parse( Buffer.concat ( request.chunks).toString())).then( content => respond(response, content) );;
-      //butt(request, JSON.parse( Buffer.concat ( request.chunks).toString())).then(data => console.log(data));
+        butt(request, JSON.parse( Buffer.concat ( request.chunks).toString()))
+        .then( content  => {
+          console.log("responding = ", [ content ]);
+          const jsontype = "{ 'content-Type': 'application/json' }";
+          response.writeHead(200, jsontype);
+          console.log(content);
+          response.end(content, 'utf-8');
+        } );
     })
   }
 
