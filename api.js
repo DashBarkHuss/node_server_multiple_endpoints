@@ -19,9 +19,14 @@ class database {
 function butt(request, payload){
   return new Promise((resolve, reject)=>{
     if (!request || !request.headers || !payload)
-    reject("error")
-    console.log("23");
+    reject("error, missing request or payload")
     resolve(`{"success": true}`)
+  let q = "select owner from butts where shape = 'flat'"
+  database.connection.query(q, (error, results)=>{
+    if (error)
+      throw error;
+    console.log(results);
+  })
   });
 }
 
