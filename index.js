@@ -36,7 +36,7 @@ http.createServer(function(request,response){
 
 console.log('Running at http://' + ip + ":" + port + "/");
 
-fetch('http://127.0.0.1:3000/api/butt', {
+fetch('http://127.0.0.1:3000/api/butt/find', {
   method: 'post',
   headers: {
     'Accept': 'application/json'

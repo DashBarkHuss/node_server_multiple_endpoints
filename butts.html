@@ -7,12 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <script type="module">
-    class User {
+    class Butt {
       constructor() {}
     }
-    User.butt = function (shape) {
+    Butt.find = function (shape) {
       console.log("user.butt");
-      fetch('/api/butt', {
+      fetch('/api/butt/find', {
         method: 'post',
         
         headers: {
@@ -36,9 +36,22 @@
             console.log(`something went wrong: `, json);
         });
     }
+
+    Butt.add = function(owner,shape){
+      fetch('api/butt/add', {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({owner: owner, shape:shape})
+      }).then(promise => promise.json())
+      .then(json =>
+        console.log(json)
+      )
+    }
     
     window.onload = () => {
-            window.User = User;
+            window.Butt = Butt;
         }
     
   </script>
@@ -47,10 +60,15 @@
 <body>
   <h1>Butt Finder</h1>
   Select shape of butt
-  <input type="button" onclick="User.butt('round')" value="round"></input>
-  <input type="button" onclick="User.butt('flat')" value="flat"></input>
-  <input type="button" onclick="User.butt('square')" value="square"></input>
+  <input type="button" onclick="Butt.find('round')" value="round"></input>
+  <input type="button" onclick="Butt.find('flat')" value="flat"></input>
+  <input type="button" onclick="Butt.find('square')" value="square"></input>
   <p id='returnedButts'></p>
+
+  <h2>Add Butt</h2>
+  <p>Owner: <input id="owner"></input></p>
+  <p>Shape: <input id="shape"></input></p>
+  <input type="button" onClick="Butt.add(window.owner.value, window.shape.value)" value="Add"></input>
 </body>
 
 </html>

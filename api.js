@@ -16,7 +16,7 @@ class database {
   }
 }
 
-function butt(request, payload){
+function action_butt_find(request, payload){
   return new Promise((resolve, reject)=>{
     if (!request || !request.headers || !payload)
     reject("error, missing request or payload")
@@ -30,6 +30,10 @@ function butt(request, payload){
     resolve(JSON.stringify(results));
   })
   });
+}
+
+function identify(a,b){
+  return API.parts[1] === a && API.parts[2] === b;
 }
 
 class API {
@@ -51,9 +55,12 @@ class API {
     }
     request.on('end', ()=>{
       API.parts = request.parts;
-      if (API.parts[0] == 'api' && API.parts[1] == "butt")
+
+      console.log(identify("butt", "find"));
+
+      if (identify("butt", "find")){
         console.log("chunks: ", JSON.parse(Buffer.concat (request.chunks)));
-        butt(request, JSON.parse( Buffer.concat ( request.chunks).toString()))
+        action_butt_find(request, JSON.parse( Buffer.concat ( request.chunks).toString()))
         .then( content  => {
           console.log("responding = ", [ content ]);
           const jsontype = "{ 'content-Type': 'application/json' }";
@@ -61,6 +68,8 @@ class API {
           console.log(content);
           response.end(content, 'utf-8');
         } );
+
+      }
     })
   }
 
