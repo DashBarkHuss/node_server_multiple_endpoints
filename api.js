@@ -20,12 +20,14 @@ function butt(request, payload){
   return new Promise((resolve, reject)=>{
     if (!request || !request.headers || !payload)
     reject("error, missing request or payload")
-    resolve(`{"success": true}`)
-  let q = "select owner from butts where shape = 'flat'"
+  let q = `select owner from butts where shape = '${payload.shape}'`
   database.connection.query(q, (error, results)=>{
     if (error)
-      throw error;
-    console.log(results);
+    throw error;
+    results.push({success: true});
+    console.log("results", results);
+    console.log(JSON.stringify(results));
+    resolve(JSON.stringify(results));
   })
   });
 }

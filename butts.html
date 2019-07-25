@@ -10,7 +10,7 @@
     class User {
       constructor() {}
     }
-    User.butt = function () {
+    User.butt = function (shape) {
       console.log("user.butt");
       fetch('/api/butt', {
         method: 'post',
@@ -18,10 +18,10 @@
         headers: {
           'Accept': 'application/json'
         },
-        body: JSON.stringify({butt: 'round'})
+        body: JSON.stringify({shape: shape})
       }).then(promise => promise.json())
         .then(json => {
-          if (json.success)
+          if (json[json.length-1]["success"])
             console.log(json);
           else
             console.log(`something went wrong: `, json);
@@ -36,8 +36,12 @@
 </head>
 
 <body>
-  Select flat butts
-  <input type="button" onclick="User.butt()" value="butt"></input>
+  <h1>Butt Finder</h1>
+  Select shape of butt
+  <input type="button" onclick="User.butt('round')" value="round"></input>
+  <input type="button" onclick="User.butt('flat')" value="flat"></input>
+  <input type="button" onclick="User.butt('square')" value="square"></input>
+  <p id='returnedButts'></p>
 </body>
 
 </html>

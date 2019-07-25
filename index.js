@@ -41,5 +41,5 @@ fetch('http://127.0.0.1:3000/api/butt', {
   headers: {
     'Accept': 'application/json'
   },
-  body: JSON.stringify({butt: 'backend'})
+  body: JSON.stringify({shape: 'flat'})
 })
