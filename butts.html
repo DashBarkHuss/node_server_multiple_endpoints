@@ -21,8 +21,17 @@
         body: JSON.stringify({shape: shape})
       }).then(promise => promise.json())
         .then(json => {
-          if (json[json.length-1]["success"])
+          if (json[json.length-1].success){
             console.log(json);
+            for (var i=0; i<(json.length-1); i++) {
+              console.log(i);
+              const owner = json[i].owner;
+              const buttDiv = document.querySelector('#returnedButts');
+              if (i == 0) buttDiv.innerHTML = "";
+              i == (json.length-2)?  buttDiv.innerHTML += owner + ".":buttDiv.innerHTML += owner + ", ";
+              
+            }
+          }
           else
             console.log(`something went wrong: `, json);
         });
