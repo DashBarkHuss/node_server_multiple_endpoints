@@ -35,6 +35,16 @@ function action_butt_find(request, payload){
 function identify(a,b){
   return API.parts[1] === a && API.parts[2] === b;
 }
+function json(chunks){
+  return JSON.parse( Buffer.concat (chunks).toString());
+}
+function respond (response, content){
+  console.log("responding = ", [ content ]);
+  const jsontype = "{ 'content-Type': 'application/json' }";
+  response.writeHead(200, jsontype);
+  console.log(content);
+  response.end(content, 'utf-8');
+}
 
 class API {
   constructor(){}
@@ -59,16 +69,9 @@ class API {
       console.log(identify("butt", "find"));
 
       if (identify("butt", "find")){
-        console.log("chunks: ", JSON.parse(Buffer.concat (request.chunks)));
-        action_butt_find(request, JSON.parse( Buffer.concat ( request.chunks).toString()))
-        .then( content  => {
-          console.log("responding = ", [ content ]);
-          const jsontype = "{ 'content-Type': 'application/json' }";
-          response.writeHead(200, jsontype);
-          console.log(content);
-          response.end(content, 'utf-8');
-        } );
-
+        console.log("chunks: ", json(request.chunks));
+        action_butt_find(request, json(request.chunks))
+        .then( content => respond( response, content) );
       }
     })
   }
