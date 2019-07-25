@@ -16,6 +16,13 @@ class database {
   }
 }
 
+function action_butt_add(request, payload){
+  console.log("add");
+  return new Promise((resolve, reject)=> {
+
+  })
+}
+
 function action_butt_find(request, payload){
   return new Promise((resolve, reject)=>{
     if (!request || !request.headers || !payload)
@@ -66,12 +73,13 @@ class API {
     request.on('end', ()=>{
       API.parts = request.parts;
 
-      console.log(identify("butt", "find"));
-
       if (identify("butt", "find")){
         console.log("chunks: ", json(request.chunks));
         action_butt_find(request, json(request.chunks))
         .then( content => respond( response, content) );
+      }
+      if (identify("butt", "add")){
+        action_butt_add();
       }
     })
   }
