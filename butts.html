@@ -52,6 +52,18 @@
         alert(msg);
       });
     }
+
+    Butt.delete = function(owner){
+      fetch('api/butt/delete', makePayload({owner: owner})
+    ).then(promise => promise.json())
+    .then(json => {
+      console.log(json)
+      let msg;
+      json.success ? msg =  `${owner}'s butt was deleted from the database.`
+      : msg = 'Something went wrong';
+      alert(msg);
+    });
+    }
     
     window.onload = () => {
             window.Butt = Butt;

@@ -44,6 +44,19 @@ function action_butt_find(request, payload){
   });
 }
 
+function action_butt_delete(request, payload){
+  return new Promise((resolve, reject)=>{
+    if (!request || !request.headers || !payload)
+      reject("error, missing request or payload");
+    let q = `delete from butts where owner = '${payload.owner}'`
+    database.connection.query(q, (error, results)=>{
+      if (error)
+        throw error;
+        resolve(JSON.stringify({success: true}));
+    });
+  });
+}
+
 function identify(a,b){
   return API.parts[1] === a && API.parts[2] === b;
 }
@@ -79,13 +92,16 @@ class API {
       API.parts = request.parts;
 
       if (identify("butt", "find")){
-        console.log("chunks: ", json(request.chunks));
         action_butt_find(request, json(request.chunks))
         .then( content => respond( response, content) );
       }
       if (identify("butt", "add")){
         action_butt_add(request, json(request.chunks))
-        .then( content => respond( response, content) );;
+        .then( content => respond( response, content) );
+      }
+      if (identify("butt", "delete")){
+        action_butt_delete(request, json(request.chunks))
+        .then( content => respond( response, content ));
       }
     })
   }
