@@ -7,19 +7,22 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <script type="module">
+    function makePayload(payload){
+      return { method: 'post',
+        headers: {
+        'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }
+    }
     class Butt {
       constructor() {}
     }
     Butt.find = function (shape) {
       console.log("user.butt");
-      fetch('/api/butt/find', {
-        method: 'post',
-        
-        headers: {
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({shape: shape})
-      }).then(promise => promise.json())
+      fetch('/api/butt/find',
+        makePayload({shape: shape})
+      ).then(promise => promise.json())
         .then(json => {
           if (json[json.length-1].success){
             console.log(json);
@@ -38,13 +41,9 @@
     }
 
     Butt.add = function(owner,shape){
-      fetch('api/butt/add', {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({owner: owner, shape:shape})
-      }).then(promise => promise.json())
+      fetch('api/butt/add', 
+      makePayload({owner: owner, shape:shape})
+      ).then(promise => promise.json())
       .then(json =>
         console.log(json)
       )

@@ -17,25 +17,30 @@ class database {
 }
 
 function action_butt_add(request, payload){
-  console.log("add");
+  console.log("payload:", payload);
   return new Promise((resolve, reject)=> {
-
-  })
+    if (!request || !request.headers || !payload)
+      reject("error, missing request or payload")
+    let q = `INSERT INTO butts (owner,shape) VALUES ('${payload.owner}', '${payload.shape}');`
+    database.connection.query(q, (error, results)=>{
+      if(error)
+        throw error;
+      resolve(JSON.stringify({success: true}));
+    })
+  });
 }
 
 function action_butt_find(request, payload){
   return new Promise((resolve, reject)=>{
     if (!request || !request.headers || !payload)
-    reject("error, missing request or payload")
-  let q = `select owner from butts where shape = '${payload.shape}'`
-  database.connection.query(q, (error, results)=>{
-    if (error)
-    throw error;
-    results.push({success: true});
-    console.log("results", results);
-    console.log(JSON.stringify(results));
-    resolve(JSON.stringify(results));
-  })
+      reject("error, missing request or payload")
+    let q = `select owner from butts where shape = '${payload.shape}'`
+    database.connection.query(q, (error, results)=>{
+      if (error)
+        throw error;
+      results.push({success: true});
+      resolve(JSON.stringify(results));
+    })
   });
 }
 
@@ -79,7 +84,8 @@ class API {
         .then( content => respond( response, content) );
       }
       if (identify("butt", "add")){
-        action_butt_add();
+        action_butt_add(request, json(request.chunks))
+        .then( content => respond( response, content) );;
       }
     })
   }
