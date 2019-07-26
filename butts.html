@@ -52,6 +52,17 @@
         alert(msg);
       });
     }
+  
+    Butt.update = function(owner, shape){
+      fetch('api/butt/update', makePayload({owner: owner, shape:shape}))
+      .then(promise => promise.json())
+      .then(json => {
+        console.log(json);
+        let msg;
+        json.success? msg = `${owner}'s butt was updated to ${shape}.`
+        : msg = `Something went wrong.`;
+      });
+    }  
 
     Butt.delete = function(owner){
       fetch('api/butt/delete', makePayload({owner: owner})

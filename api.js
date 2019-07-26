@@ -44,6 +44,20 @@ function action_butt_find(request, payload){
   });
 }
 
+function action_butt_update(request, payload){
+  return new Promise((resolve, reject)=>{
+    if (!request || !request.headers || !payload)
+      reject("error, missing request or payload");
+    let q = `update butts set shape = ${payload.shape} where owner = ${payload.owner}`;
+    console.log(payload, q);
+    database.connection.query(q, (error, results) => {
+      if (error)
+        throw error;
+      resolve(JSON.stringify({success: true}));
+    });
+  });
+}
+
 function action_butt_delete(request, payload){
   return new Promise((resolve, reject)=>{
     if (!request || !request.headers || !payload)
@@ -91,13 +105,17 @@ class API {
     request.on('end', ()=>{
       API.parts = request.parts;
 
+      if (identify("butt", "add")){
+        action_butt_add(request, json(request.chunks))
+        .then( content => respond( response, content) );
+      }
       if (identify("butt", "find")){
         action_butt_find(request, json(request.chunks))
         .then( content => respond( response, content) );
       }
-      if (identify("butt", "add")){
-        action_butt_add(request, json(request.chunks))
-        .then( content => respond( response, content) );
+      if (identify('butt', 'update')){
+        action_butt_update(request, json(request.chunks))
+        .then(content => respond( response, content));
       }
       if (identify("butt", "delete")){
         action_butt_delete(request, json(request.chunks))
