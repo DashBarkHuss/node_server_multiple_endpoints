@@ -19,15 +19,12 @@
       constructor() {}
     }
     Butt.find = function (shape) {
-      console.log("user.butt");
       fetch('/api/butt/find',
         makePayload({shape: shape})
       ).then(promise => promise.json())
         .then(json => {
           if (json[json.length-1].success){
-            console.log(json);
             for (var i=0; i<(json.length-1); i++) {
-              console.log(i);
               const owner = json[i].owner;
               const buttDiv = document.querySelector('#returned_butts');
               if (i == 0) buttDiv.innerHTML = "";
@@ -45,7 +42,6 @@
       makePayload({owner: owner, shape:shape})
       ).then(promise => promise.json())
       .then(json =>{
-        console.log(json);
         let msg;
         json.success? msg = `Success, ${owner}'s butt added` 
         : msg = "Something went wrong";
@@ -57,10 +53,10 @@
       fetch('api/butt/update', makePayload({owner: owner, shape:shape}))
       .then(promise => promise.json())
       .then(json => {
-        console.log(json);
         let msg;
         json.success? msg = `${owner}'s butt was updated to ${shape}.`
         : msg = `Something went wrong.`;
+        alert(msg);
       });
     }  
 
@@ -68,7 +64,6 @@
       fetch('api/butt/delete', makePayload({owner: owner})
     ).then(promise => promise.json())
     .then(json => {
-      console.log(json)
       let msg;
       json.success ? msg =  `${owner}'s butt was deleted from the database.`
       : msg = 'Something went wrong';
@@ -84,7 +79,8 @@
 </head>
 
 <body>
-  <h1>Butt Finder</h1>
+  <h1>Butt API</h1>
+  <h2>Find Butts</h2>
   Select shape of butt
   <input type="button" onclick="Butt.find('round')" value="round"></input>
   <input type="button" onclick="Butt.find('flat')" value="flat"></input>
@@ -95,6 +91,17 @@
   <p>Owner: <input id="owner"></input></p>
   <p>Shape: <input id="shape"></input></p>
   <input type="button" onClick="Butt.add(window.owner.value, window.shape.value)" value="Add"></input>
+  
+  <h2>Update Butt</h2>
+  <p>Owner: <input id="upOwner"></input></p>
+  <p>New Shape: <input id="upShape"></input></p>
+  <input type="button" onClick="Butt.update(window.upOwner.value, window.upShape.value)" value="Update"></input>
+
+
+  <h2>Delete Butt</h2>
+  <p>Owner: <input id="delOwner"></input></p>
+  <input type="button" onClick="Butt.delete(window.delOwner.value)" value="Delete"></input>
+
 </body>
 
 </html>

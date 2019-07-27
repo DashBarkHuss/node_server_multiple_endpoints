@@ -81,7 +81,6 @@ function respond (response, content){
   console.log("responding = ", [ content ]);
   const jsontype = "{ 'content-Type': 'application/json' }";
   response.writeHead(200, jsontype);
-  console.log(content);
   response.end(content, 'utf-8');
 }
 
