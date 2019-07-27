@@ -48,7 +48,7 @@ function action_butt_update(request, payload){
   return new Promise((resolve, reject)=>{
     if (!request || !request.headers || !payload)
       reject("error, missing request or payload");
-    let q = `update butts set shape = ${payload.shape} where owner = ${payload.owner}`;
+    let q = `update butts set shape = '${payload.shape}' where owner = '${payload.owner}'`;
     console.log(payload, q);
     database.connection.query(q, (error, results) => {
       if (error)
