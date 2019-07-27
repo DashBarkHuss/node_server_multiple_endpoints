@@ -19,4 +19,6 @@ Here's some sample content:
 ## UI
 The UI is not pretty. It's just to show you how to connect the UI to the API.
 
+*butts.html:*
+
 <img src="doc_images/ui_7-27.PNG" width = "500">
