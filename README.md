@@ -13,6 +13,7 @@ Here's how my table is structured:
 ![](doc_images/structure_7-27.PNG)
 
 Here's some sample content:
+
 <img src="doc_images/content_7-27.PNG" width = "500">
 
 ## UI
